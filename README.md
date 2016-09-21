@@ -9,7 +9,7 @@ The code needs a lot of refactoring which I intend to do but feel free to contri
 	
 	config.DataBaseIntegration(db =>
 		{
-			db.BatchSize = 500;
+			db.BatchSize = 500; //this batch size is an example, set as needed
 			db.Batcher<PostgresBatcherFactory>();
 		});
 
