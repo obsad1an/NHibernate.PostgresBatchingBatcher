@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NHibernate.PostgresBatcher")]
+[assembly: AssemblyTitle("NHibernate.PostgresBatchingBatcher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CareFusion")]
-[assembly: AssemblyProduct("NHibernate.PostgresBatcher")]
+[assembly: AssemblyProduct("NHibernate.PostgresBatchingBatcher")]
 [assembly: AssemblyCopyright("Copyright © CareFusion 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

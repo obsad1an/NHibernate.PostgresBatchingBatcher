@@ -6,10 +6,10 @@ using System.Text;
 using NHibernate.AdoNet;
 using Npgsql;
 
-namespace NHibernate.PostgresBatcher
+namespace NHibernate.PostgresBatchingBatcher
 {
     /// <summary> Custom Postgres batcher implementation </summary>
-    public class PostgresBatcher : AbstractBatcher
+    public class PostgresBatchingBatcher : AbstractBatcher
     {
         #region private members
         private int _batchSize, _countOfCommands, _totalExpectedRowsAffected, _mParameterCounter;
@@ -17,13 +17,13 @@ namespace NHibernate.PostgresBatcher
         private IDbCommand _currentBatch;
         #endregion private members
 
-        public PostgresBatcher(ConnectionManager connectionManager, IInterceptor interceptor)
+        public PostgresBatchingBatcher(ConnectionManager connectionManager, IInterceptor interceptor)
             : base(connectionManager, interceptor)
         {
             _batchSize = Factory.Settings.AdoBatchSize;
         }
 
-        #region AbstractBatcher overridden methods
+        #region AbstractBatcher overridden methods and properties
 
         /// <summary> Adds the expected row count into the batch. </summary>
         /// <param name="expectation">The number of rows expected to be affected by the query.</param>
@@ -112,8 +112,6 @@ namespace NHibernate.PostgresBatcher
             }
         }
 
-        #endregion AbstractBatcher overridden methods
-
         protected override int CountOfStatementsInCurrentBatch
         {
             get { return _countOfCommands; }
@@ -124,6 +122,10 @@ namespace NHibernate.PostgresBatcher
             get { return _batchSize; }
             set { _batchSize = value; }
         }
+
+        #endregion AbstractBatcher overridden methods and properties
+
+
 
         #region private methods
         /// <summary>
@@ -279,6 +281,7 @@ namespace NHibernate.PostgresBatcher
             }
 
         }
+
         /// <summary>
         /// TODO: support ANDS
         /// </summary>
