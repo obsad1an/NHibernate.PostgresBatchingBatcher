@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -8,9 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NHibernate.PostgresBatchingBatcher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("CareFusion")]
 [assembly: AssemblyProduct("NHibernate.PostgresBatchingBatcher")]
-[assembly: AssemblyCopyright("Copyright © CareFusion 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
