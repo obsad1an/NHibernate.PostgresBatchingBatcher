@@ -53,5 +53,5 @@ by INSERT you wouln't find any problem, but if you send an UPDATE with more WHER
 	
 ## Reference documentation:
 
-	- [Postgres Keyords](https://www.postgresql.org/docs/7.3/static/sql-keywords-appendix.html)
-	- [Update Statement](https://www.postgresql.org/docs/9.3/static/sql-update.html)
+[Postgres Keyords](https://www.postgresql.org/docs/7.3/static/sql-keywords-appendix.html)
+[Update Statement](https://www.postgresql.org/docs/9.3/static/sql-update.html)
