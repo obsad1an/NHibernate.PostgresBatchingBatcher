@@ -34,13 +34,7 @@ namespace NHibernate.PostgresBatchingBatcher
         /// </remarks>
         public override void AddToBatch(IExpectation expectation)
         {
-            if (expectation.CanBeBatched
-                &&
-                !(
-                    (CurrentCommand.CommandText.StartsWith("INSERT INTO") && CurrentCommand.CommandText.Contains("VALUES")) //command is an insert
-                    ||
-                    (CurrentCommand.CommandText.StartsWith("UPDATE") && CurrentCommand.CommandText.Contains("SET")) //command is an update
-                ))
+            if (expectation.CanBeBatched && !Helpers.IsBatchable(CurrentCommand.CommandText))
             {
                 //NonBatching behavior
                 var cmd = CurrentCommand;
@@ -54,12 +48,12 @@ namespace NHibernate.PostgresBatchingBatcher
             _totalExpectedRowsAffected += expectation.ExpectedRowCount;
 
             //Batch INSERT statements
-            if (CurrentCommand.CommandText.StartsWith("INSERT INTO") && CurrentCommand.CommandText.Contains("VALUES"))
+            if (CurrentCommand.CommandText.StartsWith("INSERT INTO", StringComparison.OrdinalIgnoreCase))
             {
                 BatchInsert();
             }
             //Batch UPDATE statements
-            if (CurrentCommand.CommandText.StartsWith("UPDATE") && CurrentCommand.CommandText.Contains("SET"))
+            if (CurrentCommand.CommandText.StartsWith("UPDATE", StringComparison.OrdinalIgnoreCase))
             {
                 BatchUpdate();
             }
@@ -134,7 +128,7 @@ namespace NHibernate.PostgresBatchingBatcher
         private void BatchInsert()
         {
             var len = CurrentCommand.CommandText.Length;
-            var idx = CurrentCommand.CommandText.IndexOf("VALUES", StringComparison.Ordinal);
+            var idx = CurrentCommand.CommandText.IndexOf("VALUES", StringComparison.OrdinalIgnoreCase);
             var endidx = idx + "VALUES".Length + 2;
 
             if (_currentBatch == null)
@@ -199,15 +193,15 @@ namespace NHibernate.PostgresBatchingBatcher
             }
         }
 
-        /// <summary>
-        /// generates the update batch statement
-        /// </summary>
+        /// <summary> generates the update batch statement </summary>
         private void BatchUpdate()
         {
             var len = CurrentCommand.CommandText.Length;
-            var idx = CurrentCommand.CommandText.IndexOf("SET", StringComparison.Ordinal);
+            var idx = CurrentCommand.CommandText.IndexOf("SET", StringComparison.OrdinalIgnoreCase);
             var endidx = idx + "SET".Length + 2;
-            var where = CurrentCommand.CommandText.IndexOf("WHERE ", StringComparison.Ordinal);
+            
+            // WHERE is a reserved word. This is safe to make so far there are no set with special expressions
+            var where = CurrentCommand.CommandText.IndexOf("WHERE ", StringComparison.OrdinalIgnoreCase);
 
             //check that a new batch has been started (DoExecuteBatch() reinitializes properties)
             if (_currentBatch == null)
@@ -267,7 +261,7 @@ namespace NHibernate.PostgresBatchingBatcher
             var whereParam = NextParam();
             paramName.Add(whereParam);
             //append where
-            var whereStatement = ProcessWhere(CurrentCommand.CommandText.Substring(where - 1, len - where - 1), whereParam);
+            var whereStatement = Helpers.ProcessWhere(CurrentCommand.CommandText.Substring(where - 1, len - where - 1), whereParam);
             _sbBatchCommand.Append(whereStatement);
 
             //rename & copy parameters from CurrentCommand to _currentBatch
@@ -282,19 +276,8 @@ namespace NHibernate.PostgresBatchingBatcher
 
         }
 
-        /// <summary>
-        /// TODO: support ANDS
-        /// </summary>
-        /// <param name="whereString"></param>
-        /// <param name="whereParam"></param>
-        /// <returns></returns>
-        private string ProcessWhere(string whereString, string whereParam)
-        {
-            var whereProperty = whereString.Trim().Split(' ')[1];
-
-            return " WHERE " + whereProperty + " = " + whereParam + "; ";
-        }
-
+        /// <summary> Next parameter factory </summary>
+        /// <returns> Next parameter to be used </returns>
         private string NextParam()
         {
             return ":p" + _mParameterCounter++;
