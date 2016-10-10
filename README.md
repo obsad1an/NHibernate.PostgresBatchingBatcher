@@ -1,4 +1,4 @@
-# NHibernate.PostgresBatchingBatcher (Pre-alpha release. Use at own risk.)
+# NHibernate.PostgresBatchingBatcher (Beta release. Use at own risk.)
 
 After finding out that NHibernate doesn't have an implementation for [batching in Postgres](https://github.com/nhibernate/nhibernate-core/tree/master/src/NHibernate/AdoNet), I decided to make this library based on this old Stackoverflow [post](http://stackoverflow.com/questions/4611337/nhibernate-does-not-seems-doing-bulk-inserting-into-postgresql)
 
