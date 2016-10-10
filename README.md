@@ -9,7 +9,7 @@ The code needs a lot of refactoring which I intend to do but feel free to contri
 
 This code has been tested on a production enviroment for a specific project. If well it does work and you will notice a big performance improvement, you have to actually know what for INSERT and UPDATE statements you send to the batcher.
 By INSERT you wouln't find any problem, but if you send an UPDATE with more WHEREs as the conditioning UPDATE, you might run into a problem (BE CAREFUL).
-Have in mind that the ADO.NET Data Provider for PostgreSQL(http://www.npgsql.org) doesn't count with a SQL Parser [READ HERE](https://github.com/npgsql/npgsql/issues/1042). This is the reason why NHibernate Core does not implement a Postgres Batcher.
+Have in mind that the [ADO.NET Data Provider for PostgreSQL](http://www.npgsql.org) doesn't count with a SQL Parser [READ HERE](https://github.com/npgsql/npgsql/issues/1042). This is the reason why NHibernate Core does not implement a Postgres Batcher.
 
 ### Example UPDATE with more than one WHERE in statement:
 
