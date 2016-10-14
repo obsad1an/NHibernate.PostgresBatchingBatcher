@@ -34,6 +34,7 @@ Have in mind that the [ADO.NET Data Provider for PostgreSQL](http://www.npgsql.o
 
 ## Work to do:
 
+	- Change the way inserts are being batched. (many batched inserts instead of one huge insert (test if this avoids problems with too many statements))
 	- Code Refactoring
 	- Build an actual parser?
 	- Unit Testing
