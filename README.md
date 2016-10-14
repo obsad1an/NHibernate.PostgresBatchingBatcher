@@ -4,11 +4,13 @@ After finding out that NHibernate doesn't have an implementation for [batching i
 
 Credits to [Gerrit](http://stackoverflow.com/users/960796/gerrit) for the initial code.
 
+[ADO.NET Data Provider for PostgreSQL](http://www.npgsql.org) doesn't count with a SQL Parser [READ HERE](https://github.com/npgsql/npgsql/issues/1042). This is the reason why NHibernate Core does not implement a Postgres Batcher.
+
 ## Important
 
 This code has been tested on a production enviroment for a specific project. If well it does work and you will notice a big performance improvement, you have to actually know what for INSERT and UPDATE statements you send to the batcher.
-By INSERT you wouln't find any problem, but if you send an UPDATE with more WHEREs as the conditioning UPDATE, you might run into a problem (BE CAREFUL).
-Have in mind that the [ADO.NET Data Provider for PostgreSQL](http://www.npgsql.org) doesn't count with a SQL Parser [READ HERE](https://github.com/npgsql/npgsql/issues/1042). This is the reason why NHibernate Core does not implement a Postgres Batcher.
+By INSERT you wouln't find any problem, but if you send an UPDATE with multiple conditionals, you might run into a problem (BE CAREFUL). This cases have yet to be tested and supported.
+
 
 ### Example UPDATE with more than one WHERE in statement:
 
@@ -22,7 +24,7 @@ Have in mind that the [ADO.NET Data Provider for PostgreSQL](http://www.npgsql.o
 	
 	config.DataBaseIntegration(db =>
 		{
-			db.BatchSize = 500; //this batch size is an example, set as needed
+			db.BatchSize = 500; //this batch size is an example, set as needed and test it with big amounts of inserts
 			db.Batcher<PostgresBatchingBatcherFactory>();
 		});
 
