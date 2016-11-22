@@ -9,7 +9,7 @@ Credits to [Gerrit](http://stackoverflow.com/users/960796/gerrit) for the initia
 ## Important
 
 This code has been tested on a production enviroment for a specific project. If well it does work and you will notice a big performance improvement, you have to actually know what for INSERT and UPDATE statements you send to the batcher.
-By INSERT you wouln't find any problem, but if you send an UPDATE with multiple conditionals, you might run into a problem (BE CAREFUL). This cases have yet to be tested and supported.
+By INSERT you shouldn't find any problem, but sending an UPDATE with multiple conditionals or a WHERE with SELECTs, might bring problems (BE CAREFUL). This cases have yet to be tested and supported (if possible).
 
 
 ### Example UPDATE with more than one WHERE in statement:
